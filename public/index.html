@@ -5,8 +5,8 @@
     <title>SWEN-344 Web Assignment 0</title>
 </head>
 
-<body style="font-family: 'Segoe UI';">
-    <h1 style="font-family: 'Verdana';font-weight: bold; font-size: 36px; text-align: center;">SWEN-344 Web Assignment 0</h1>
+<body style="font-family: 'Segoe UI'; text-align: center;">
+    <h1 style="font-family: 'Verdana'; font-weight: bold; font-size: 36px;">SWEN-344 Web Assignment 0</h1>
 
     <h2 style="font-family: Impact; text-align: center;">Section 04</h2>
 
@@ -20,13 +20,14 @@
         <option value="ParadisioGarage">Paradisio Garage</option>
     </select>
 
-    <div id="displayBox" style="visibility: visible; width: 400px; margin: 10px auto; padding: 10px; text-align: center; border: 2px solid black;">
+    <div id="displayBox" style="visibility: hidden; width: 400px; margin: 10px auto; padding: 10px; border: 2px solid black;">
         <div id="clubDetails"></div>
     </div>
 
     <script>
         function displayClubInfo() {
             const clubSelect = document.getElementById("clubSelect");
+            const displayBox = document.getElementById("displayBox");
             const clubDetails = document.getElementById("clubDetails");
 
             const selectedClub = clubSelect.value;
@@ -83,18 +84,19 @@
             };
 
             if (selectedClub in clubInfo) {
-            const info = clubInfo[selectedClub];
-            clubDetails.innerHTML = `
-                <div style="background-color: ${info.backgroundColor}; color: ${info.color};">
-                    <p>Name: ${info.name}</p>
-                    <p>Location: ${info.location}</p>
-                    <p>Music: ${info.theme}</p>
-                </div>
-            `;
-        } else {
-            clubDetails.innerHTML = "";
-
-        }
+                const info = clubInfo[selectedClub];
+                clubDetails.innerHTML = `
+                    <div style="background-color: ${info.backgroundColor}; color: ${info.color};">
+                        <p>Name: ${info.name}</p>
+                        <p>Location: ${info.location}</p>
+                        <p>Music: ${info.theme}</p>
+                    </div>
+                `;
+                displayBox.style.visibility = "visible";
+            } else {
+                clubDetails.innerHTML = "";
+                displayBox.style.visibility = "hidden";
+            }
         }
     </script>
 </body>
