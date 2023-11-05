@@ -20,7 +20,7 @@
         <option value="ParadisioGarage">Paradisio Garage</option>
     </select>
 
-    <div id="clubDetails" style="width: 400px; margin: 0 auto; padding: 10px; text-align: center;"></div>
+    <div id="clubDetails" style="width: 400px; margin: 0 auto; padding: 10px;"></div>
 
     <script>
         function displayClubInfo() {
@@ -83,9 +83,8 @@
               const info = clubInfo[selectedClub];
               clubDetails.innerHTML = `
                   <div style="background-color: ${info.backgroundColor}; color: ${info.color};">
-                      <h3>${info.name}</h3>
+                      <h3>Name: ${info.name}</h3>
                       <p>Location: ${info.location}</p>
-                      <p>Capacity: ${info.capacity}</p>
                       <p>Musical Theme: ${info.theme}</p>
                   </div>
               `;
