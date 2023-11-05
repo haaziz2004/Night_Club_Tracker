@@ -1,11 +1,100 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html>
+
 <head>
-  <meta charset="utf-8">
-  <title>Web Assignment 0</title>
-  <meta name="description" content="First web assignment">
-  <meta name="author" content="student name">
+    <title>SWEN-344 Web Assignment 0</title>
 </head>
+
 <body>
+    <h1 style="font-family: 'Segoe UI'; font-weight: bold; font-size: 36px; text-align: center;">SWEN-344 Web Assignment 0</h1>
+
+    <h2 style="font-family: Impact; text-align: center;">Section 04</h2>
+
+    <select id="clubSelect" onchange="displayClubInfo()">
+        <option value="">Select a club</option>
+        <option value="Arcane">Club Arcane</option>
+        <option value="Underground">Club Underground</option>
+        <option value="Soda">Club Soda</option>
+        <option value="Studio52">Studio 52</option>
+        <option value="Ciro's">Ciro's</option>
+        <option value="ParadisioGarage">Paradisio Garage</option>
+    </select>
+
+    <div id="clubDetails" style="width: 400px; margin: 0 auto; padding: 10px; text-align: center;"></div>
+
+    <script>
+        function displayClubInfo() {
+            const clubSelect = document.getElementById("clubSelect");
+            const clubDetails = document.getElementById("clubDetails");
+
+            const selectedClub = clubSelect.value;
+
+            const clubInfo = {
+                Arcane: {
+                    name: "Club Arcane",
+                    location: "City 1",
+                    capacity: "500",
+                    theme: "Rock",
+                    backgroundColor: "black",
+                    color: "white",
+                },
+                Underground: {
+                    name: "Club Underground",
+                    location: "City 2",
+                    capacity: "300",
+                    theme: "Pop",
+                    backgroundColor: "red",
+                    color: "white",
+                },
+                Soda: {
+                    name: "Club Soda",
+                    location: "City 3",
+                    capacity: "400",
+                    theme: "Metal",
+                    backgroundColor: "white",
+                    color: "black",
+                },
+                Studio52: {
+                    name: "Studio 52",
+                    location: "City 4",
+                    capacity: "250",
+                    theme: "Grunge",
+                    backgroundColor: "green",
+                    color: "white",
+                },
+                "Ciro's": {
+                    name: "Ciro's",
+                    location: "City 5",
+                    capacity: "600",
+                    theme: "Pop",
+                    backgroundColor: "blue",
+                    color: "white",
+                },
+                ParadisioGarage: {
+                    name: "Paradisio Garage",
+                    location: "City 6",
+                    capacity: "350",
+                    theme: "Rock",
+                    backgroundColor: "yellow",
+                    color: "black",
+                },
+            };
+
+            if (selectedClub in clubInfo) {
+                const info = clubInfo[selectedClub];
+                clubDetails.innerHTML = `
+                    <div style="background-color: ${info.backgroundColor}; color: ${info.color};">
+                        <h3>${info.name}</h3>
+                        <p>Location: ${info.location}</p>
+                        <p>Capacity: ${info.capacity}</p>
+                        <p>Musical Theme: ${info.theme}</p>
+                    </div>
+                `;
+            } else {
+                clubDetails.innerHTML = "";
+            }
+        }
+    </script>
 </body>
+
 </html>
