@@ -5,7 +5,7 @@
     <title>SWEN-344 Web Assignment 0</title>
 </head>
 
-<body>
+<body style="font-family: 'Segoe UI';">
     <h1 style="font-family: 'Segoe UI'; font-weight: bold; font-size: 36px; text-align: center;">SWEN-344 Web Assignment 0</h1>
 
     <h2 style="font-family: Impact; text-align: center;">Section 04</h2>
@@ -32,7 +32,7 @@
             const clubInfo = {
                 Arcane: {
                     name: "Club Arcane",
-                    location: "City 1",
+                    location: "Buffalo",
                     capacity: "500",
                     theme: "Rock",
                     backgroundColor: "black",
@@ -40,7 +40,7 @@
                 },
                 Underground: {
                     name: "Club Underground",
-                    location: "City 2",
+                    location: "Rochester",
                     capacity: "300",
                     theme: "Pop",
                     backgroundColor: "red",
@@ -48,7 +48,7 @@
                 },
                 Soda: {
                     name: "Club Soda",
-                    location: "City 3",
+                    location: "San Francisco",
                     capacity: "400",
                     theme: "Metal",
                     backgroundColor: "white",
@@ -56,7 +56,7 @@
                 },
                 Studio52: {
                     name: "Studio 52",
-                    location: "City 4",
+                    location: "Valencia",
                     capacity: "250",
                     theme: "Grunge",
                     backgroundColor: "green",
@@ -64,7 +64,7 @@
                 },
                 "Ciro's": {
                     name: "Ciro's",
-                    location: "City 5",
+                    location: "Lahore",
                     capacity: "600",
                     theme: "Pop",
                     backgroundColor: "blue",
@@ -72,7 +72,7 @@
                 },
                 ParadisioGarage: {
                     name: "Paradisio Garage",
-                    location: "City 6",
+                    location: "Albany",
                     capacity: "350",
                     theme: "Rock",
                     backgroundColor: "yellow",
@@ -80,16 +80,15 @@
                 },
             };
 
-            
-                const info = clubInfo[selectedClub];
-                clubDetails.innerHTML = `
-                    <div style="background-color: ${info.backgroundColor}; color: ${info.color};">
-                        <h3>${info.name}</h3>
-                        <p>Location: ${info.location}</p>
-                        <p>Capacity: ${info.capacity}</p>
-                        <p>Musical Theme: ${info.theme}</p>
-                    </div>
-                `;
+              const info = clubInfo[selectedClub];
+              clubDetails.innerHTML = `
+                  <div style="background-color: ${info.backgroundColor}; color: ${info.color};">
+                      <h3>${info.name}</h3>
+                      <p>Location: ${info.location}</p>
+                      <p>Capacity: ${info.capacity}</p>
+                      <p>Musical Theme: ${info.theme}</p>
+                  </div>
+              `;
             
         }
     </script>
