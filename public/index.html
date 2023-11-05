@@ -86,6 +86,7 @@
             if (selectedClub in clubInfo) {
                 const info = clubInfo[selectedClub];
                 displayBox.style.backgroundColor = info.backgroundColor; 
+                displayBox.style.color = info.textColor; 
                 clubDetails.innerHTML = `
                     <p>Name: ${info.name}</p>
                     <p>Location: ${info.location}</p>
