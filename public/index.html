@@ -10,7 +10,7 @@
 
     <h2 style="font-family: Impact; text-align: center;">Section 04</h2>
 
-    <select id="clubSelect" onchange="displayClubInfo()">
+    <select id="clubSelect" onchange="displayClubInfo()" style="display: block; margin-left: auto; margin-right: auto;">
         <option value="">Select a club</option>
         <option value="Arcane">Club Arcane</option>
         <option value="Underground">Club Underground</option>
@@ -80,7 +80,7 @@
                 },
             };
 
-            if (selectedClub in clubInfo) {
+            
                 const info = clubInfo[selectedClub];
                 clubDetails.innerHTML = `
                     <div style="background-color: ${info.backgroundColor}; color: ${info.color};">
@@ -90,9 +90,7 @@
                         <p>Musical Theme: ${info.theme}</p>
                     </div>
                 `;
-            } else {
-                clubDetails.innerHTML = "";
-            }
+            
         }
     </script>
 </body>
