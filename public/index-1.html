@@ -5,6 +5,7 @@
     <link rel="stylesheet" href="clubs.css">
 </head>
 <body>
+    
     <h1 class="title">Nightclub Capacity</h1>
     <h3 class ="sub-heading">Each time someone enters/ leaves the club, select the correct club and click the appropriate button</h3>
     <div class="club-container">
@@ -18,32 +19,38 @@
         <div class="club" id="club2">
             <h2>Club Underground</h2>
             <div class="occupancy">
-                <p class="message">testxxxx</p>
+                <p class="message"></p>
                 <p class="count">0</p>
             </div>
         </div>
         <div class="club" id="club3">
             <h2>Club Soda</h2>
             <div class="occupancy">
-                <p class="message">Test</p>
+                <p class="message"></p>
                 <p class="count">0</p>
             </div>
         </div>
         <div class="club" id="club4">
             <h2>Studio 52</h2>
             <div class="occupancy">
-                <p class="message">Test</p>
+                <p class="message"></p>
                 <p class="count">0</p>
             </div>
         </div>
     </div>
     <div class="controls">
-        <form id="club-selector">
-            <label><input type="radio" name="club" value="club1">Club Arcane</label>
-            <label><input type="radio" name="club" value="club2">Club Underground</label>
-            <label><input type="radio" name="club" value="club3">Club Soda</label>
-            <label><input type="radio" name="club" value="club4">Studio 52</label>
-        </form>
+        <div>
+        <span class="club-selector">
+            <input type="radio" name="club" value="club1">
+            <label for = "club1">Club Arcane</label><br>
+            <input type="radio" name="club" value="club2">
+            <label for = "club2">Club Undergound</label><br>
+            <input type="radio" name="club" value="club3">
+            <label for = "club3">Club Soda</label><br>
+            <input type="radio" name="club" value="club4">
+            <label for = "club4">Studio 52</label><br>
+
+        </span>
         <button id="plus-button">+</button>
         <button id="minus-button">-</button>
     </div>
