@@ -84,6 +84,3 @@ button {
     width: 50px;
 }
 
-button:focus {
-    outline: none;
-}
