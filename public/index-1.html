@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nightclub Capacity</title>
+    <link rel="stylesheet" href="clubs.css">
+</head>
+<body>
+    <h1 class="title">Nightclub Capacity</h1>
+    <h3 class ="sub-heading">Each time someone enters/ leaves the club, select the correct club and click the appropriate button</h3>
+    <div class="club-container">
+        <div class="club" id="club1">
+            <h2>Club Arcane</h2>
+            <div class="occupancy">
+                <p class="message"></p>
+                <p class="count">0</p>
+            </div>
+        </div>
+        <div class="club" id="club2">
+            <h2>Club Underground</h2>
+            <div class="occupancy">
+                <p class="message">testxxxx</p>
+                <p class="count">0</p>
+            </div>
+        </div>
+        <div class="club" id="club3">
+            <h2>Club Soda</h2>
+            <div class="occupancy">
+                <p class="message">Test</p>
+                <p class="count">0</p>
+            </div>
+        </div>
+        <div class="club" id="club4">
+            <h2>Studio 52</h2>
+            <div class="occupancy">
+                <p class="message">Test</p>
+                <p class="count">0</p>
+            </div>
+        </div>
+    </div>
+    <div class= "controls">
+        <form id = "club-selector">
+            <input type = "radio" name = "club" value = "1" id = "club1-radio">Club Arcane
+            <input type = "radio" name = "club" value = "2" id = "club2-radio">Club Underground
+            <input type = "radio" name = "club" value = "3" id = "club3-radio">Club Soda
+            <input type = "radio" name = "club" value = "4" id = "club4-radio">Studio 52
+        </form>
+        
+
+    </div>
+    <button id = "increment">+</button>
+    <button id = "decrement">-</button>
+    <script src = "clubs.js"></script>
+</body>
+</html>
