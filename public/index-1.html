@@ -15,40 +15,45 @@
                 <p class="count">0</p>
             </div>
         </div>
+        
         <div class="club" id="club2">
             <h2>Club Underground</h2>
             <div class="occupancy">
-                <p class="message">testxxxx</p>
+                <p class="message"></p>
                 <p class="count">0</p>
             </div>
         </div>
         <div class="club" id="club3">
             <h2>Club Soda</h2>
             <div class="occupancy">
-                <p class="message">Test</p>
+                <p class="message"></p>
                 <p class="count">0</p>
             </div>
         </div>
         <div class="club" id="club4">
             <h2>Studio 52</h2>
             <div class="occupancy">
-                <p class="message">Test</p>
+                <p class="message"></p>
                 <p class="count">0</p>
             </div>
         </div>
     </div>
-    <div class= "controls">
-        <form id = "club-selector">
-            <input type = "radio" name = "club" value = "1" id = "club1-radio">Club Arcane
-            <input type = "radio" name = "club" value = "2" id = "club2-radio">Club Underground
-            <input type = "radio" name = "club" value = "3" id = "club3-radio">Club Soda
-            <input type = "radio" name = "club" value = "4" id = "club4-radio">Studio 52
-        </form>
-        
+    <div class="controls">
+        <div>
+        <span class="club-selector">
+            <input type="radio" name="club" value="club1">
+            <label for = "club1">Club Arcane</label><br>
+            <input type="radio" name="club" value="club2">
+            <label for = "club2">Club Undergound</label><br>
+            <input type="radio" name="club" value="club3">
+            <label for = "club3">Club Soda</label><br>
+            <input type="radio" name="club" value="club4">
+            <label for = "club4">Studio 52</label><br>
 
+        </span>
+        <button id="plus-button">+</button>
+        <button id="minus-button">-</button>
     </div>
-    <button id = "increment">+</button>
-    <button id = "decrement">-</button>
     <script src = "clubs.js"></script>
 </body>
 </html>

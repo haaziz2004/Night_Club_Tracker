@@ -1,6 +1,9 @@
 body {
     font-family: 'Segoe UI', sans-serif;
     text-align: center;
+    background-color: lightblue;
+
+
 }
 
 .title {
@@ -21,15 +24,17 @@ body {
 }
 
 .club {
-    border: 1px solid #000;
+    border: 2px solid #000;
     border-radius: 10px;
     padding: 10px;
     margin: 10px;
     width: 200px;
     height: 150px;
-    background-color: green;
+    background-color: lightgreen;
     text-align: center;
     position: relative;
+    box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.3); /* horizontal offset, vertical offset, blur radius, color */
+
 }
 
 .occupancy {
@@ -43,7 +48,9 @@ body {
     bottom: -50px;
     left: 50%;
     transform: translateX(-70%);
-    font-size: large;
+    font-size: larger;
+    font-weight: bold;
+    
 }
 
 .message {
@@ -52,22 +59,27 @@ body {
     bottom: 0px;
     left: 50%;
     transform: translateX(-50%);
-    font-size: large;
+    font-size: larger;
+    font-style: italic;
     
 }
 
 
 .controls {
-    margin-top: 300px;
+    margin-top: 200px;
+    display: flex;
+    justify-content: center;
+    
+
+    
 }
 
-#club-selector {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.club-selector  {
+    margin: auto;
 }
 
 button {
+    margin-top: 500px;
     font-size: 20px;
     margin: 5px;
     width: 50px;
