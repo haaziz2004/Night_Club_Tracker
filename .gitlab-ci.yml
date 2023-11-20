@@ -4,7 +4,7 @@ image:
 variables:
   CURR_APP: "" #Will be changed to your React project name.  Do not modify
 
-  ha4716-react-client2: none #e.g. acb123-react-client2.  Change to YOUR project 
+  PROJECT_NAME2: ha4716-react-client2 #e.g. acb123-react-client2.  Change to YOUR project 
 
   PROJECT_NAME3: none  #e.g. acb123-react-client3.  Change to YOUR project 
 
