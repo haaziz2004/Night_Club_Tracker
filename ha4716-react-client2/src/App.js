@@ -1,54 +1,121 @@
-import React, { useState } from 'react';
+import React, { Component } from 'react';
 import './App.css';
 import './clubs.css';
 
-const NightclubCapacity = () => {
-  // Define club names and initial capacities
-  const initialClubs = {
-    'Club Arcane': 0,
-    'Club Underground': 0,
-    'Club Soda': 0,
-    'Studio 52': 0,
+
+
+class NightclubCapacity extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      clubs: {
+        'Club Arcane': { occupancy: 0, color: 'lightgreen' },
+        'Club Underground': { occupancy: 0, color: 'lightgreen' },
+        'Club Soda': { occupancy: 0, color: 'lightgreen' },
+        'Studio 52': { occupancy: 0, color: 'lightgreen' },
+      },
+      selectedClub: null,
+      messages: {
+        'Club Arcane': '',
+        'Club Underground': '',
+        'Club Soda': '',
+        'Studio 52': '',
+      },
+    };
+  }
+
+  getColor = (clubName) => {
+    const { clubs, messages } = this.state;
+    const occupancy = clubs[clubName].occupancy;
+
+    if (occupancy < clubCapacities[clubName].yellowThreshold) {
+      return 'lightgreen';
+    } else if (occupancy < clubCapacities[clubName].maxCapacity) {
+      return '#EFFD5F';
+    } else if (occupancy == clubCapacities[clubName].maxCapacity) {
+      return '#FF0800';
+    }
+    if (occupancy == 0) {
+      return 'lightgreen';
+    }
   };
 
-  // Use state to keep track of club capacities
-  const [clubs, setClubs] = useState(initialClubs);
+  updateMessage = () => {
+    const { clubs, messages } = this.state;
+    const newMessages = { ...messages };
 
-  // Function to handle incrementing or decrementing club capacity
-  const handleCapacityChange = (club, operation) => {
-    setClubs((prevClubs) => {
-      const updatedClubs = { ...prevClubs };
-      if (operation === 'increment') {
-        updatedClubs[club]++;
-      } else if (operation === 'decrement' && updatedClubs[club] > 0) {
-        updatedClubs[club]--;
+    Object.keys(clubs).forEach((clubName) => {
+      const occupancy = clubs[clubName].occupancy;
+
+      if (occupancy < clubCapacities[clubName].yellowThreshold) {
+        newMessages[clubName] = 'Welcome!';
+      } else if (occupancy < clubCapacities[clubName].maxCapacity) {
+        newMessages[clubName] = 'Warn the bouncers…';
+      } else if (occupancy == clubCapacities[clubName].maxCapacity) {
+        newMessages[clubName] = 'No one allowed in!';
       }
-      return updatedClubs;
+      if (occupancy == 0) {
+        newMessages[clubName] = '';
+      }
+
+      const color = this.getColor(clubName);
+      clubs[clubName].color = color;
     });
+
+    this.setState({ messages: newMessages, clubs });
   };
 
-  return (
-    <div>
-      <div className="title">
-        <h1>Nightclub Capacity</h1>
-        <h3 className="sub-heading">
-          Each time someone enters/leaves the club, select the correct club and click the appropriate button
-        </h3>
-      </div>
-      <div className="club-container">
-        {/* Render each club */}
-        {Object.keys(clubs).map((clubName) => (
-          <div className="club" key={clubName}>
+  handleCapacityChange = (operation) => {
+    const { clubs, selectedClub } = this.state;
+
+    if (selectedClub) {
+      const currentOccupancy = clubs[selectedClub].occupancy;
+
+      if (operation == 'increment' && currentOccupancy < clubCapacities[selectedClub].maxCapacity) {
+        const updatedOccupancy = currentOccupancy + 1;
+        const updatedClubs = {
+          ...clubs,
+          [selectedClub]: { ...clubs[selectedClub], occupancy: updatedOccupancy },
+        };
+        this.setState({ clubs: updatedClubs }, () => this.updateMessage());
+      }
+
+      if (operation == 'decrement' && currentOccupancy > 0) {
+        const updatedOccupancy = currentOccupancy - 1;
+        const updatedClubs = {
+          ...clubs,
+          [selectedClub]: { ...clubs[selectedClub], occupancy: updatedOccupancy },
+        };
+        this.setState({ clubs: updatedClubs }, () => this.updateMessage());
+      }
+    }
+  };
+
+  handleRadioChange = (event) => {
+    this.setState({ selectedClub: event.target.value });
+  };
+  render() {
+    const { clubs, selectedClub, messages } = this.state;
+
+    return (
+      <div>
+        <div className="title">
+          <h1>Nightclub Capacity</h1>
+          <h3 className="sub-heading">
+            Each time someone enters/leaves the club, select the correct club and click the appropriate button
+          </h3>
+        </div>
+        <div className="club-container">
+          {Object.keys(clubs).map((clubName) => (
+            <div className="club" key={clubName} id={clubName} style={{ backgroundColor: clubs[clubName].color }}>
             <h2>{clubName}</h2>
-            <div className="occupancy">
-              <p className="message"></p>
-              {/* Display club count from state */}
-              <p className="count">{clubs[clubName]}</p>
+              <div className="occupancy">
+                <p className="message">{messages[clubName]}</p>
+                <p className="count">{clubs[clubName].occupancy}</p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
-        {/* Radio buttons for club selection */}
+          ))}
+        </div>
         <span className="club-selector">
           {Object.keys(clubs).map((clubName) => (
             <div key={clubName}>
@@ -57,25 +124,25 @@ const NightclubCapacity = () => {
                 name="club"
                 value={clubName}
                 id={clubName}
-                onChange={() => console.log(`Selected ${clubName}`)} // Add your logic for selected club
+                onChange={this.handleRadioChange}
               />
               <label htmlFor={clubName}>{clubName}</label>
-              <br />
+              <br/>
             </div>
           ))}
         </span>
-        {/* Buttons for capacity change */}
-        
-        <button onClick={() => handleCapacityChange('Club Arcane', 'increment')} id="plus-button">
-          +
-        </button>
-        
-        <button onClick={() => handleCapacityChange('Club Arcane', 'decrement')} id="minus-button">
-          -
-        </button>
-      
-    </div>
-  );
+        <button onClick={() => this.handleCapacityChange('increment')} id="plus"> + </button>
+        <button onClick={() => this.handleCapacityChange('decrement')} id="minus"> - </button>
+      </div>
+    );
+  }
+}
+
+const clubCapacities = {
+  'Club Arcane': { maxCapacity: 100, yellowThreshold: 70 },
+  'Club Underground': { maxCapacity: 50, yellowThreshold: 30 },
+  'Club Soda': { maxCapacity: 20, yellowThreshold: 12 },
+  'Studio 52': { maxCapacity: 52, yellowThreshold: 32 },
 };
 
 export default NightclubCapacity;
