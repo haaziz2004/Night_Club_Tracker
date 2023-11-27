@@ -1,0 +1,94 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    background-color: lightblue;
+
+
+}
+
+.title {
+    font-size: 12px;
+    margin-top: 20px;
+}
+
+.sub-heading {
+    font-size: 18px;
+    margin-top: 10px;
+}
+
+.club-container {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    margin: 20px;
+    margin-bottom: 175px;
+}
+
+.club {
+    border: 2px solid #000;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px;
+    width: 200px;
+    height: 150px;
+    background-color: lightgreen;
+    text-align: center;
+    position: relative;
+    box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.3); /* horizontal offset, vertical offset, blur radius, color */
+
+}
+
+.occupancy {
+    margin: 5px;
+    
+}
+
+.count {
+    margin: 5px;
+    position: absolute;
+    bottom: -50px;
+    left: 50%;
+    transform: translateX(-70%);
+    font-size: larger;
+    font-weight: bold;
+    
+}
+
+.message {
+    font-size: 16px;
+    position: absolute;
+    bottom: 0px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: larger;
+    font-style: italic;
+    
+}
+
+
+.controls {
+    margin-top: 200px; /* Adjust as needed */
+    display: flex;
+    justify-content: center; /* Center items horizontally */
+  }
+  
+button {
+  margin: 5px;
+  font-size: 20px;
+  width: 50px;
+  
+}
+
+.club-selector  {
+    margin: auto;
+}
+
+button {
+    font-size: 20px;
+    margin: 5px;
+    width: 50px;
+}
+
+button:focus {
+    outline: none;
+}
