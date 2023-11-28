@@ -1,7 +1,7 @@
 import React from 'react';
 
 
-const Club = ({ clubName, color, message, occupancy, area, genre,handleCapacityChange }) => {
+const Club = ({ clubName, color, message, occupancy, area, genre, handleCapacityChange }) => {
   return (
     <div className="club" key={clubName} id={clubName} style={{ backgroundColor: color }}>
       <div className="club-container">

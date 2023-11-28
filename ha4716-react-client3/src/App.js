@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import './clubs.css';
 import Club from './clubs'; 
+import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 
 
@@ -22,7 +23,7 @@ class NightclubCapacity extends Component {
         'Club Soda': '',
         'Studio 52': '',
       },
-
+      
     };
   }
 
