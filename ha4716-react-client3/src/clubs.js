@@ -17,6 +17,7 @@ const Club = ({ clubName, color, message, occupancy, area, genre, handleCapacity
       <button className = 'minus' onClick={() => handleCapacityChange('decrement', clubName)} id="minus">
         -
       </button>
+      
     </div>
 
         <p className="count">{occupancy}</p>

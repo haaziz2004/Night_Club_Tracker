@@ -23,12 +23,58 @@ class NightclubCapacity extends Component {
         'Club Soda': '',
         'Studio 52': '',
       },
+
+      clubCapacities: {
+        'Club Arcane': { maxCapacity: 100, yellowThreshold: 70 },
+        'Club Underground': { maxCapacity: 50, yellowThreshold: 30 },
+        'Club Soda': { maxCapacity: 20, yellowThreshold: 12 },
+        'Studio 52': { maxCapacity: 52, yellowThreshold: 32 },
+      },
+      filterCity: '',
       
     };
   }
 
+  handleFilterChange = (event) => {
+    this.setState({ filterCity: event.target.value });
+  };
+
+  filteredClubs = () => {
+    const { clubs, filterCity, messages } = this.state;
+    if (!filterCity) {
+      return Object.keys(clubs).map((clubName) => (
+        <Club
+        key={clubName}
+        clubName={clubName}
+        color={clubs[clubName].color}
+        area={clubs[clubName].location}
+        genre={clubs[clubName].genre}
+        message={messages[clubName]}
+        occupancy={clubs[clubName].occupancy}
+        handleCapacityChange={this.handleCapacityChange}
+        />
+      ));
+    } else {
+      return Object.keys(clubs)
+        .filter((clubName) => clubs[clubName].location.toLowerCase().includes(filterCity.toLowerCase()))
+        .map((clubName) => (
+          <Club
+          key={clubName}
+          clubName={clubName}
+          color={clubs[clubName].color}
+          area={clubs[clubName].location}
+          genre={clubs[clubName].genre}
+          message={messages[clubName]}
+          occupancy={clubs[clubName].occupancy}
+          handleCapacityChange={this.handleCapacityChange}
+          />
+        ));
+    }
+  };
+
+
   getColor = (clubName) => {
-    const { clubs } = this.state;
+    const { clubs, clubCapacities } = this.state;
     const occupancy = clubs[clubName].occupancy;
 
     if (occupancy < clubCapacities[clubName].yellowThreshold) {
@@ -44,7 +90,7 @@ class NightclubCapacity extends Component {
   };
 
   updateMessage = () => {
-    const { clubs, messages } = this.state;
+    const { clubs, messages, clubCapacities } = this.state;
     const newMessages = { ...messages };
 
     Object.keys(clubs).forEach((clubName) => {
@@ -68,35 +114,45 @@ class NightclubCapacity extends Component {
     this.setState({ messages: newMessages, clubs });
   };
 
-  handleCapacityChange = (operation,clubName) => {
+  incrementCapacity = (clubName) => {
+    const { clubs,clubCapacities } = this.state;
+    const currentOccupancy = clubs[clubName].occupancy;
+  
+    if (currentOccupancy < clubCapacities[clubName].maxCapacity) {
+      const updatedOccupancy = currentOccupancy + 1;
+      const updatedClubs = {
+        ...clubs,
+        [clubName]: { ...clubs[clubName], occupancy: updatedOccupancy },
+      };
+      this.setState({ clubs: updatedClubs }, () => this.updateMessage());
+    }
+  };
+  
+  decrementCapacity = (clubName) => {
     const { clubs } = this.state;
-
-    
-      const currentOccupancy = clubs[clubName].occupancy;
-
-      if (operation == 'increment' && currentOccupancy < clubCapacities[clubName].maxCapacity) {
-        const updatedOccupancy = currentOccupancy + 1;
-        const updatedClubs = {
-          ...clubs,
-          [clubName]: { ...clubs[clubName], occupancy: updatedOccupancy },
-        };
-        this.setState({ clubs: updatedClubs }, () => this.updateMessage());
-      }
-
-      if (operation == 'decrement' && currentOccupancy > 0) {
-        const updatedOccupancy = currentOccupancy - 1;
-        const updatedClubs = {
-          ...clubs,
-          [clubName]: { ...clubs[clubName], occupancy: updatedOccupancy },
-        };
-        this.setState({ clubs: updatedClubs }, () => this.updateMessage());
-      }
-    
+    const currentOccupancy = clubs[clubName].occupancy;
+  
+    if (currentOccupancy > 0) {
+      const updatedOccupancy = currentOccupancy - 1;
+      const updatedClubs = {
+        ...clubs,
+        [clubName]: { ...clubs[clubName], occupancy: updatedOccupancy },
+      };
+      this.setState({ clubs: updatedClubs }, () => this.updateMessage());
+    }
+  };
+  
+  handleCapacityChange = (operation, clubName) => {
+    if (operation === 'increment') {
+      this.incrementCapacity(clubName);
+    } else if (operation === 'decrement') {
+      this.decrementCapacity(clubName);
+    }
   };
 
   
   render() {
-    const { clubs, messages } = this.state;
+    const { clubs, messages, filterCity } = this.state;
 
     return (
       <div>
@@ -107,39 +163,23 @@ class NightclubCapacity extends Component {
           </h3>
         </div>
         <div className="club-container">
-        {Object.keys(clubs).map((clubName) => (
-            <Club
-              key={clubName}
-              clubName={clubName}
-              color={clubs[clubName].color}
-              area={clubs[clubName].location}
-              genre={clubs[clubName].genre}
-              message={messages[clubName]}
-              occupancy={clubs[clubName].occupancy}
-              handleCapacityChange={this.handleCapacityChange}
+          {this.filteredClubs()}
+        </div>
+        <input
+          type="text"
+          placeholder="Filter by city..."
+          value={filterCity}
+          onChange={this.handleFilterChange}
+        />
 
-            />
-          ))}
+        
         
         </div>
-        
-       {/* <Controls
-          clubs={clubs}
-          selectedClub={selectedClub}
-          handleRadioChange={this.handleRadioChange}
-          handleCapacityChange={this.handleCapacityChange}
-        /> */}
-      </div>
       
     );
   }
 }
 
-const clubCapacities = {
-  'Club Arcane': { maxCapacity: 100, yellowThreshold: 70 },
-  'Club Underground': { maxCapacity: 50, yellowThreshold: 30 },
-  'Club Soda': { maxCapacity: 20, yellowThreshold: 12 },
-  'Studio 52': { maxCapacity: 52, yellowThreshold: 32 },
-};
+
 
 export default NightclubCapacity;
