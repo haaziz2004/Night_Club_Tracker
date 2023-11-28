@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import './clubs.css';
 import Club from './clubs'; 
-import Controls from './Controls'; 
-
 
 
 
@@ -12,10 +10,10 @@ class NightclubCapacity extends Component {
     super(props);
     this.state = {
       clubs: {
-        'Club Arcane': { occupancy: 0, color: 'lightgreen' },
-        'Club Underground': { occupancy: 0, color: 'lightgreen' },
-        'Club Soda': { occupancy: 0, color: 'lightgreen' },
-        'Studio 52': { occupancy: 0, color: 'lightgreen' },
+        'Club Arcane': { occupancy: 0, color: 'lightgreen', genre: 'Rock', location: 'Buffalo' },
+        'Club Underground': { occupancy: 0, color: 'lightgreen' , genre: 'Pop', location: 'Rochester'},
+        'Club Soda': { occupancy: 0, color: 'lightgreen', genre: 'Metal', location: 'London' },
+        'Studio 52': { occupancy: 0, color: 'lightgreen', genre: 'Grunge', location:'Dubai' },
       },
       selectedClub: null,
       messages: {
@@ -24,11 +22,12 @@ class NightclubCapacity extends Component {
         'Club Soda': '',
         'Studio 52': '',
       },
+
     };
   }
 
   getColor = (clubName) => {
-    const { clubs, messages } = this.state;
+    const { clubs } = this.state;
     const occupancy = clubs[clubName].occupancy;
 
     if (occupancy < clubCapacities[clubName].yellowThreshold) {
@@ -68,17 +67,17 @@ class NightclubCapacity extends Component {
     this.setState({ messages: newMessages, clubs });
   };
 
-  handleCapacityChange = (operation) => {
-    const { clubs, selectedClub } = this.state;
+  handleCapacityChange = (operation,clubName) => {
+    const { clubs } = this.state;
 
-    if (selectedClub) {
-      const currentOccupancy = clubs[selectedClub].occupancy;
+    
+      const currentOccupancy = clubs[clubName].occupancy;
 
-      if (operation == 'increment' && currentOccupancy < clubCapacities[selectedClub].maxCapacity) {
+      if (operation == 'increment' && currentOccupancy < clubCapacities[clubName].maxCapacity) {
         const updatedOccupancy = currentOccupancy + 1;
         const updatedClubs = {
           ...clubs,
-          [selectedClub]: { ...clubs[selectedClub], occupancy: updatedOccupancy },
+          [clubName]: { ...clubs[clubName], occupancy: updatedOccupancy },
         };
         this.setState({ clubs: updatedClubs }, () => this.updateMessage());
       }
@@ -87,18 +86,16 @@ class NightclubCapacity extends Component {
         const updatedOccupancy = currentOccupancy - 1;
         const updatedClubs = {
           ...clubs,
-          [selectedClub]: { ...clubs[selectedClub], occupancy: updatedOccupancy },
+          [clubName]: { ...clubs[clubName], occupancy: updatedOccupancy },
         };
         this.setState({ clubs: updatedClubs }, () => this.updateMessage());
       }
-    }
+    
   };
 
-  handleRadioChange = (event) => {
-    this.setState({ selectedClub: event.target.value });
-  };
+  
   render() {
-    const { clubs, selectedClub, messages } = this.state;
+    const { clubs, messages } = this.state;
 
     return (
       <div>
@@ -114,18 +111,25 @@ class NightclubCapacity extends Component {
               key={clubName}
               clubName={clubName}
               color={clubs[clubName].color}
+              area={clubs[clubName].location}
+              genre={clubs[clubName].genre}
               message={messages[clubName]}
               occupancy={clubs[clubName].occupancy}
+              handleCapacityChange={this.handleCapacityChange}
+
             />
           ))}
+        
         </div>
-        <Controls
+        
+       {/* <Controls
           clubs={clubs}
           selectedClub={selectedClub}
           handleRadioChange={this.handleRadioChange}
           handleCapacityChange={this.handleCapacityChange}
-        />
+        /> */}
       </div>
+      
     );
   }
 }

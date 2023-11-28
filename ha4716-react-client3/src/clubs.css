@@ -30,23 +30,57 @@ body {
     padding: 10px;
     margin: 10px;
     width: 200px;
-    height: 150px;
+    height: 300px;
     background-color: lightgreen;
     text-align: center;
     position: relative;
-    box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.3); /* horizontal offset, vertical offset, blur radius, color */
+    box-shadow: 5px 10px 8px rgba(0, 0, 0, 0.3); 
 
 }
 
-.occupancy {
-    margin: 5px;
+.genre {
+    font-size: 16px;
+    position: absolute;
+    bottom: 150px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: larger;
+    font-style: italic;
     
 }
+
+.location {
+    font-size: 16px;
+    position: absolute;
+    bottom: 125px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: larger;
+    font-style: italic;
+    
+}
+ 
+.buttons {
+    font-size: 16px;
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;    
+}
+
+.plus {
+   background-color: #09e310; 
+}
+.minus {
+    background-color: #D21404; 
+ }
+
 
 .count {
     margin: 5px;
     position: absolute;
-    bottom: -50px;
+    bottom: -30px;
     left: 50%;
     transform: translateX(-70%);
     font-size: larger;
@@ -57,7 +91,7 @@ body {
 .message {
     font-size: 16px;
     position: absolute;
-    bottom: 0px;
+    bottom: -0px;
     left: 50%;
     transform: translateX(-50%);
     font-size: larger;
@@ -67,9 +101,9 @@ body {
 
 
 .controls {
-    margin-top: 200px; /* Adjust as needed */
+    margin-top: 200px; 
     display: flex;
-    justify-content: center; /* Center items horizontally */
+    justify-content: center;
   }
   
 button {
@@ -83,11 +117,7 @@ button {
     margin: auto;
 }
 
-button {
-    font-size: 20px;
-    margin: 5px;
-    width: 50px;
-}
+
 
 button:focus {
     outline: none;

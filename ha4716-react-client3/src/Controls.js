@@ -3,8 +3,9 @@ import React from 'react';
 const Controls = ({ clubs, selectedClub, handleRadioChange, handleCapacityChange }) => {
   return (
     <div>
+       
       <span className="club-selector">
-        {Object.keys(clubs).map((clubName) => (
+       {Object.keys(clubs).map((clubName) => (
           <div key={clubName}>
             <input
               type="radio"
@@ -19,6 +20,8 @@ const Controls = ({ clubs, selectedClub, handleRadioChange, handleCapacityChange
           </div>
         ))}
       </span>
+       
+
       <button onClick={() => handleCapacityChange('increment')} id="plus">
         +
       </button>
