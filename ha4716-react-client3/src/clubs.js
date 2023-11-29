@@ -1,10 +1,13 @@
 import React from 'react';
 
 
-const Club = ({ clubName, color, message, occupancy, area, genre, handleCapacityChange }) => {
+const Club = ({ clubName, color, message, occupancy, area, genre, handleCapacityChange,handleRemoveClub  }) => {
   return (
     <div className="club" key={clubName} id={clubName} style={{ backgroundColor: color }}>
       <div className="club-container">
+        <button className= 'remove' onClick={() => handleRemoveClub(clubName)}>
+            Remove
+          </button>
         <h2>{clubName}</h2>
         <p className="location">{area}</p>
         <p className="genre">{genre}</p>
@@ -19,6 +22,7 @@ const Club = ({ clubName, color, message, occupancy, area, genre, handleCapacity
       </button>
       
     </div>
+    
 
         <p className="count">{occupancy}</p>
       </div>

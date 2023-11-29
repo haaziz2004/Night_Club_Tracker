@@ -69,6 +69,25 @@ body {
     display: flex;    
 }
 
+.add {
+  justify-content: center;  
+  display: flex;
+  width: 100px;
+   
+}
+.remove {
+    margin: 5px;
+    position: absolute;
+    bottom: 285px;
+    left: 60px;
+    transform: translateX(-70%);
+    font-size: medium;
+    font-weight: bold;
+    width: 80px; 
+    background-color: #D21404;
+
+    
+}
 .plus {
    background-color: #09e310; 
 }

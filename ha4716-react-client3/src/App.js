@@ -3,7 +3,7 @@ import './App.css';
 import './clubs.css';
 import Club from './clubs'; 
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input } from 'reactstrap';
-
+import { CreateModal } from './dialogcreate';
 
 
 class NightclubCapacity extends Component {
@@ -31,9 +31,53 @@ class NightclubCapacity extends Component {
         'Studio 52': { maxCapacity: 52, yellowThreshold: 32 },
       },
       filterCity: '',
+      isModalOpen: false,
+
       
     };
   }
+  toggleModal = () => {
+    this.setState((prevState) => ({
+      isModalOpen: !prevState.isModalOpen,
+    }));
+  };
+  createClub = (newClubData) => {
+    const { clubs } = this.state;
+  
+    // Set initial occupancy for new clubs
+    const newClubs = Object.keys(newClubData).reduce((acc, clubName) => {
+      acc[clubName] = {
+        ...newClubData[clubName],
+        occupancy: 0, // Set initial occupancy here
+      };
+      return acc;
+    }, {});
+  
+    this.setState({
+      clubs: {
+        ...clubs,
+        ...newClubs,
+      },
+    });
+  };
+
+  handleRemoveClub = (clubName) => {
+    const { clubs, messages, clubCapacities } = this.state;
+    const updatedClubs = { ...clubs };
+    const updatedMessages = { ...messages };
+    const updatedCapacities = { ...clubCapacities };
+  
+    delete updatedClubs[clubName];
+    delete updatedMessages[clubName];
+    delete updatedCapacities[clubName];
+  
+    this.setState({
+      clubs: updatedClubs,
+      messages: updatedMessages,
+      clubCapacities: updatedCapacities,
+    });
+  };
+  
 
   handleFilterChange = (event) => {
     this.setState({ filterCity: event.target.value });
@@ -52,6 +96,9 @@ class NightclubCapacity extends Component {
         message={messages[clubName]}
         occupancy={clubs[clubName].occupancy}
         handleCapacityChange={this.handleCapacityChange}
+        handleRemoveClub={this.handleRemoveClub}
+
+
         />
       ));
     } else {
@@ -67,6 +114,8 @@ class NightclubCapacity extends Component {
           message={messages[clubName]}
           occupancy={clubs[clubName].occupancy}
           handleCapacityChange={this.handleCapacityChange}
+          handleRemoveClub={this.handleRemoveClub}
+
           />
         ));
     }
@@ -152,7 +201,7 @@ class NightclubCapacity extends Component {
 
   
   render() {
-    const { clubs, messages, filterCity } = this.state;
+    const { clubs, messages, filterCity, isModalOpen } = this.state;
 
     return (
       <div>
@@ -171,7 +220,12 @@ class NightclubCapacity extends Component {
           value={filterCity}
           onChange={this.handleFilterChange}
         />
+        <div>
+          <button className = "add" onClick={this.toggleModal}>Add New Club</button>
+          </div>
+        
 
+        <CreateModal isOpen={isModalOpen} toggleModal={this.toggleModal} createClub={this.createClub} />
         
         
         </div>
