@@ -221,11 +221,7 @@ class NightclubCapacity extends Component {
         <div>
           <button className = "add" onClick={this.toggleModal}>Add New Club</button>
           </div>
-        
-
         <CreateModal isOpen={isModalOpen} toggleModal={this.toggleModal} createClub={this.createClub} />
-        
-        
         </div>
       
     );
