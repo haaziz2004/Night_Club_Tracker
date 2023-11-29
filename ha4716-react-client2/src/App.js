@@ -1,6 +1,9 @@
 import React, { Component } from 'react';
 import './App.css';
 import './clubs.css';
+import Club from './clubs'; 
+import Controls from './Controls'; 
+
 
 
 
@@ -106,33 +109,22 @@ class NightclubCapacity extends Component {
           </h3>
         </div>
         <div className="club-container">
-          {Object.keys(clubs).map((clubName) => (
-            <div className="club" key={clubName} id={clubName} style={{ backgroundColor: clubs[clubName].color }}>
-            <h2>{clubName}</h2>
-              <div className="occupancy">
-                <p className="message">{messages[clubName]}</p>
-                <p className="count">{clubs[clubName].occupancy}</p>
-              </div>
-            </div>
+        {Object.keys(clubs).map((clubName) => (
+            <Club
+              key={clubName}
+              clubName={clubName}
+              color={clubs[clubName].color}
+              message={messages[clubName]}
+              occupancy={clubs[clubName].occupancy}
+            />
           ))}
         </div>
-        <span className="club-selector">
-          {Object.keys(clubs).map((clubName) => (
-            <div key={clubName}>
-              <input
-                type="radio"
-                name="club"
-                value={clubName}
-                id={clubName}
-                onChange={this.handleRadioChange}
-              />
-              <label htmlFor={clubName}>{clubName}</label>
-              <br/>
-            </div>
-          ))}
-        </span>
-        <button onClick={() => this.handleCapacityChange('increment')} id="plus"> + </button>
-        <button onClick={() => this.handleCapacityChange('decrement')} id="minus"> - </button>
+        <Controls
+          clubs={clubs}
+          selectedClub={selectedClub}
+          handleRadioChange={this.handleRadioChange}
+          handleCapacityChange={this.handleCapacityChange}
+        />
       </div>
     );
   }
