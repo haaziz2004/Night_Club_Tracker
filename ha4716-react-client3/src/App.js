@@ -43,12 +43,10 @@ class NightclubCapacity extends Component {
   };
   createClub = (newClubData) => {
     const { clubs } = this.state;
-  
-    // Set initial occupancy for new clubs
     const newClubs = Object.keys(newClubData).reduce((acc, clubName) => {
       acc[clubName] = {
         ...newClubData[clubName],
-        occupancy: 0, // Set initial occupancy here
+        occupancy: 0, 
       };
       return acc;
     }, {});

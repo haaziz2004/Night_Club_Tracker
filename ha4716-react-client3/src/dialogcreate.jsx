@@ -14,7 +14,7 @@ export const CreateModal = ({ isOpen, toggleModal, createClub }) => {
       setClubData((prevData) => ({ ...prevData, [name]: value }));
     };
   
-    const handleSave = () => {
+    const save = () => {
       createClub({
         [clubData.name]: {
           genre: clubData.genre,
@@ -57,7 +57,7 @@ export const CreateModal = ({ isOpen, toggleModal, createClub }) => {
           <label>Max Capacity: </label>
           <input type="number" id="maxThreshold" name="maxThreshold" value={clubData.maxCapacity} onChange={handleInputChange} />
   
-          <button type="button" onClick={handleSave}>
+          <button type="button" onClick={save}>
             Save
           </button>
         </div>
