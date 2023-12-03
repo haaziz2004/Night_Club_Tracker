@@ -9,7 +9,7 @@ app = Flask(__name__) #create Flask instance
 CORS(app) #Enable CORS on Flask server to work with Nodejs pages
 api = Api(app) #api router
 
-api.add_resource(NightClub,'/example_api')
+api.add_resource(NightClub,'/NightClub')
 
 if __name__ == '__main__':
     print("Loading db");
