@@ -1,15 +1,17 @@
-DROP table if EXISTS people CASCADE;
+DROP table if EXISTS NightClub CASCADE;
 
-CREATE TABLE people (
+CREATE TABLE NightClub (
     id   SERIAL PRIMARY KEY NOT NULL,
-    name VARCHAR(30),
-    email varchar(30) not null
+    name VARCHAR(30) not null,
+    genre varchar(30) not null,
+    location varchar(30),
+    occupancy integer
 );
 
 
-INSERT INTO people(name, email)	
-        VALUES ('albert', 'emc2@relative.edu');
-INSERT INTO people(name, email)	
-        VALUES ('isaac', 'ouch@apple.com');
-INSERT INTO people(name, email)	
-        VALUES ('leonardo', 'icnivad@code.com');
+INSERT INTO NightClub(name, genre, location, occupancy) VALUES 
+        ('Club Arcane', 'Rock', 'Buffalo', 0),
+        ('Club Underground', 'Pop', 'Rochester', 0),
+        ('Club Soda', 'Metal', 'London', 0),
+        ('Studio 52', 'Grunge', 'Dubai', 0)
+        ;
