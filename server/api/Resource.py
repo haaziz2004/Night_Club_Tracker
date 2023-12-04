@@ -32,10 +32,29 @@ class NightClub(Resource):
         max = int(args['max'])
         id = int(args['id'])
 
-        sql = """ UPDATE NightClub SET name = %s, genre = %s, location = %s, yellowThreshold = %s, max = %s WHERE id = %s RETURNING name
+        sql = """UPDATE NightClub SET name = %s, genre = %s, location = %s, yellowThreshold = %s, max = %s WHERE id = %s RETURNING name
         """       
         result = exec_insert_returning(sql, (name,genre,location,yellowThreshold,max,id,))
         return result
+    
+    def post(self):
+        parser =reqparse.RequestParser()
+        parser.add_argument('name', type=str)
+        parser.add_argument('genre', type=str)
+        parser.add_argument('location',type = str)
+        parser.add_argument('yellowThreshold',type = str)
+        parser.add_argument('max',type = str)
+
+        args = parser.parse_args()
+        name = args['name']
+        genre = args['genre']
+        location = args['location']
+        yellowThreshold = int(args['yellowThreshold'])
+        max = int(args['max'])
+
+        sql = """INSERT into NightClub (name, genre, location, yellowThreshold, max ) VALUES (%s,%s,%s,%s,%s) RETURNING name""" 
+        result = exec_insert_returning(sql, (name,genre,location,yellowThreshold,max,))
+        return result    
     
 class DeleteClub(Resource):
     def delete(self, id):
@@ -54,6 +73,7 @@ class incrementOccupancy(Resource):
         sql2 = """ UPDATE NightClub SET occupancy = %s WHERE id = %s RETURNING occupancy"""
         result = exec_insert_returning(sql2,(new,id,))
         return result
+    
 class decrementOccupancy(Resource):
     def put(self):
         parser =reqparse.RequestParser()

@@ -7,8 +7,8 @@ class TestExample(unittest.TestCase):
     base_url = 'http://localhost:5000'
 
 
-    def test_list_nightclubs1(self): #called after testing delete 
-        expected = 3 #number of rows
+    def test_list_nightclubs1(self): #called after deleting then creating
+        expected = 4  #number of rows
         actual = get_rest_call(self, 'http://localhost:5000/NightClub') 
         self.assertEqual(expected, len(actual))
 
@@ -26,10 +26,23 @@ class TestExample(unittest.TestCase):
         expected = 'Club Curry'
         self.assertEqual(expected, result)
 
+    def test_create_club(self):
+        name = "Club Aziz"
+        genre = "punk"
+        location = "Space"
+        yellowThreshold = 90
+        max = 110 
+        data = dict(name=name, genre = genre,location = location, yellowThreshold = yellowThreshold, max = max)
+        jdata = json.dumps(data)
+        hdr = {'content-type': 'application/json'}
+        result = post_rest_call(self,'http://localhost:5000'+'/NightClub', jdata, hdr )
+        expected = 'Club Aziz'
+        self.assertEqual(expected, result)
+
     def test_delete(self):
         id = '2'
         delete = delete_rest_call(self,'http://localhost:5000/Delete/2' )
-        expected = 3 #number of rows
+        expected = 4 #number of rows after post was used 
         actual = get_rest_call(self, 'http://localhost:5000/NightClub')
         self.assertEqual(expected, len(actual))
 
