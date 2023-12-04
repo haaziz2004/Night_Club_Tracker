@@ -36,6 +36,18 @@ class NightclubCapacity extends Component {
       
     };
   }
+
+  //componentDidMount() {
+  //  fetch('http://localhost:5000/NightClub')
+     // .then((response) => response.json())
+      //.then((data) => {
+       // this.setState({ clubs: data });
+     // })
+     // .catch((error) => {
+      //  console.error('Error fetching data:', error);
+     // });
+ // }
+
   toggleModal = () => {
     this.setState((prevState) => ({
       isModalOpen: !prevState.isModalOpen,
