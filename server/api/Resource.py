@@ -20,7 +20,6 @@ class NightClub(Resource):
         parser.add_argument('name', type=str)
         parser.add_argument('genre', type=str)
         parser.add_argument('location',type = str)
-        parser.add_argument('occupancy',type = str)
         parser.add_argument('yellowThreshold',type = str)
         parser.add_argument('max',type = str)
         parser.add_argument('id',type = str)
@@ -29,14 +28,43 @@ class NightClub(Resource):
         name = args['name']
         genre = args['genre']
         location = args['location']
-        occupancy = int(args['occupany'])
         yellowThreshold = int(args['yellowThreshold'])
         max = int(args['max'])
         id = int(args['id'])
 
-        sql = """ UPDATE NightClub SET name = %s, genre = %s, location = %s, occupancy = %s, yellowThreshold = %s, max = %s WHERE id = %s
+        sql = """ UPDATE NightClub SET name = %s, genre = %s, location = %s, yellowThreshold = %s, max = %s WHERE id = %s RETURNING name
         """       
-        result = exec_insert_returning(sql, (name,genre,location,occupancy,yellowThreshold,max,id,))
+        result = exec_insert_returning(sql, (name,genre,location,yellowThreshold,max,id,))
+        return result
+    
+class DeleteClub(Resource):
+    def delete(self, id):
+        sql = "DELETE from NightClub WHERE id = %s "
+        result2 = exec_commit(sql, (id,))
+
+class incrementOccupancy(Resource):
+    def put(self):
+        parser =reqparse.RequestParser()
+        parser.add_argument('id', type=str)
+        args = parser.parse_args()
+        id = int(args['id'])
+        sql = "SELECT occupancy FROM NightClub WHERE id = %s "
+        current = exec_get_all(sql,(id,))
+        new = int(current[0][0]) + 1
+        sql2 = """ UPDATE NightClub SET occupancy = %s WHERE id = %s RETURNING occupancy"""
+        result = exec_insert_returning(sql2,(new,id,))
+        return result
+class decrementOccupancy(Resource):
+    def put(self):
+        parser =reqparse.RequestParser()
+        parser.add_argument('id', type=str)
+        args = parser.parse_args()
+        id = int(args['id'])
+        sql = "SELECT occupancy FROM NightClub WHERE id = %s "
+        current = exec_get_all(sql,(id,))
+        new = int(current[0][0]) - 1
+        sql2 = """ UPDATE NightClub SET occupancy = %s WHERE id = %s RETURNING occupancy"""
+        result = exec_insert_returning(sql2,(new,id,))
         return result
 
 
