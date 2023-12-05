@@ -52,8 +52,8 @@ class NightClub(Resource):
         yellowThreshold = int(args['yellowThreshold'])
         max = int(args['max'])
 
-        sql = """INSERT into NightClub (name, genre, location, yellowThreshold, max ) VALUES (%s,%s,%s,%s,%s) RETURNING name""" 
-        result = exec_insert_returning(sql, (name,genre,location,yellowThreshold,max,))
+        sql = """INSERT into NightClub (name, genre, location, occupancy, yellowThreshold, max ) VALUES (%s,%s,%s,%s,%s,%s) RETURNING name""" 
+        result = exec_insert_returning(sql, (name,genre,location,0,yellowThreshold,max,))
         return result    
     
 class DeleteClub(Resource):

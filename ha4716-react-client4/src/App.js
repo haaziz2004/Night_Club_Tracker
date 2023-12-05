@@ -11,24 +11,15 @@ class NightclubCapacity extends Component {
     super(props);
     this.state = {
       clubs: {
-        'Club Arcane': { occupancy: 0, color: 'lightgreen', genre: 'Rock', location: 'Buffalo' },
-        'Club Underground': { occupancy: 0, color: 'lightgreen' , genre: 'Pop', location: 'Rochester'},
-        'Club Soda': { occupancy: 0, color: 'lightgreen', genre: 'Metal', location: 'London' },
-        'Studio 52': { occupancy: 0, color: 'lightgreen', genre: 'Grunge', location:'Dubai' },
+        
       },
       selectedClub: null,
       messages: {
-        'Club Arcane': '',
-        'Club Underground': '',
-        'Club Soda': '',
-        'Studio 52': '',
+        
       },
 
       clubCapacities: {
-        'Club Arcane': { maxCapacity: 100, yellowThreshold: 70 },
-        'Club Underground': { maxCapacity: 50, yellowThreshold: 30 },
-        'Club Soda': { maxCapacity: 20, yellowThreshold: 12 },
-        'Studio 52': { maxCapacity: 52, yellowThreshold: 32 },
+        
       },
       filterCity: '',
       isModalOpen: false,
@@ -36,23 +27,89 @@ class NightclubCapacity extends Component {
       
     };
   }
+//GET
+  updateData = (apiResponse) => {
+    const updatedClubs = {};
+    const updatedMessages = {};
+    const updatedCapacities = {};
+  
+    apiResponse.forEach((clubData) => {
+      const clubName = clubData[1];
+      updatedClubs[clubName] = {
+        area: clubData[3],
+        genre: clubData[2],
+        clubName: clubData[1],
+         
+        occupancy: clubData[4],
+        id: clubData[0],
+      };
 
-  //componentDidMount() {
-  //  fetch('http://localhost:5000/NightClub')
-     // .then((response) => response.json())
-      //.then((data) => {
-       // this.setState({ clubs: data });
-     // })
-     // .catch((error) => {
-      //  console.error('Error fetching data:', error);
-     // });
- // }
+      updatedMessages[clubName] = '';
+      updatedCapacities[clubName] = {
+        maxCapacity: clubData[6],
+        yellowThreshold: clubData[5],
+      };
+    });
+  
+    this.setState(
+      {
+        clubs: updatedClubs,
+        messages: updatedMessages,
+        clubCapacities: updatedCapacities,
+      },
+      () => {
+        this.updateMessage(); 
+      }
+    );
+
+
+  
+
+    };
+
+  fetchData = () => {
+    fetch('http://localhost:5000/NightClub')
+    .then(
+        (response) => 
+        {
+           if (response.status === 200)
+           {
+              return (response.json()) ;
+           }
+           else
+           {
+               console.log("HTTP error:" + response.status + ":" +  response.statusText);
+               return ([ ["status ", response.status]]);
+           }
+        }
+        )
+    .then ((jsonOutput) => 
+             {
+                 this.updateData(jsonOutput);
+             }
+         )
+   .catch((error) => 
+           {console.log(error);
+               this.updateData("");
+            } )
+  }
+
+  componentDidMount(){
+    this.fetchData();
+    this.updateMessage();
+
+  }
+
+  //MODAL
 
   toggleModal = () => {
     this.setState((prevState) => ({
       isModalOpen: !prevState.isModalOpen,
     }));
   };
+  
+ //CREATE 
+
   createClub = (newClubData) => {
     const { clubs } = this.state;
     const newClubs = Object.keys(newClubData).reduce((acc, clubName) => {
@@ -71,23 +128,33 @@ class NightclubCapacity extends Component {
     });
   };
 
-  handleRemoveClub = (clubName) => {
-    const { clubs, messages, clubCapacities } = this.state;
-    const updatedClubs = { ...clubs };
-    const updatedMessages = { ...messages };
-    const updatedCapacities = { ...clubCapacities };
-  
-    delete updatedClubs[clubName];
-    delete updatedMessages[clubName];
-    delete updatedCapacities[clubName];
-  
-    this.setState({
-      clubs: updatedClubs,
-      messages: updatedMessages,
-      clubCapacities: updatedCapacities,
-    });
+  //REMOVE
+
+  doDelete = (clubName) => {
+    const { clubs } = this.state;
+    const club = clubs[clubName];
+    
+    fetch(`http://localhost:5000/Delete/${club.id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          this.fetchData()
+        } else {
+          console.log('Failed to delete club');
+        }
+      })
+      .catch((error) => {
+        console.error('Error deleting club:', error);
+      });
   };
   
+
+  
+  //FILTER 
 
   handleFilterChange = (event) => {
     this.setState({ filterCity: event.target.value });
@@ -101,36 +168,40 @@ class NightclubCapacity extends Component {
         key={clubName}
         clubName={clubName}
         color={clubs[clubName].color}
-        area={clubs[clubName].location}
+        area={clubs[clubName].area}
         genre={clubs[clubName].genre}
         message={messages[clubName]}
         occupancy={clubs[clubName].occupancy}
-        handleCapacityChange={this.handleCapacityChange}
-        handleRemoveClub={this.handleRemoveClub}
+        incrementCapacity={this.incrementCapacity}
+        decrementCapacity={this.decrementCapacity}
+        doDelete={this.doDelete}
+        id ={clubName.id}
 
 
         />
       ));
     } else {
       return Object.keys(clubs)
-        .filter((clubName) => clubs[clubName].location.toLowerCase().includes(filterCity.toLowerCase()))
+        .filter((clubName) => clubs[clubName].area.toLowerCase().includes(filterCity.toLowerCase()))
         .map((clubName) => (
           <Club
           key={clubName}
           clubName={clubName}
           color={clubs[clubName].color}
-          area={clubs[clubName].location}
+          area={clubs[clubName].area}
           genre={clubs[clubName].genre}
           message={messages[clubName]}
           occupancy={clubs[clubName].occupancy}
-          handleCapacityChange={this.handleCapacityChange}
-          handleRemoveClub={this.handleRemoveClub}
+          incrementCapacity={this.incrementCapacity}
+          decrementCapacity={this.decrementCapacity}
+          doDelete={this.doDelete}
 
           />
         ));
     }
   };
 
+  //CHANGE COLOR 
 
   getColor = (clubName) => {
     const { clubs, clubCapacities } = this.state;
@@ -147,6 +218,8 @@ class NightclubCapacity extends Component {
       return 'lightgreen';
     }
   };
+
+  //UPDATES MESSAGE 
 
   updateMessage = () => {
     const { clubs, messages, clubCapacities } = this.state;
@@ -173,42 +246,81 @@ class NightclubCapacity extends Component {
     this.setState({ messages: newMessages, clubs });
   };
 
-  incrementCapacity = (clubName) => {
-    const { clubs,clubCapacities } = this.state;
-    const currentOccupancy = clubs[clubName].occupancy;
   
-    if (currentOccupancy < clubCapacities[clubName].maxCapacity) {
-      const updatedOccupancy = currentOccupancy + 1;
-      const updatedClubs = {
-        ...clubs,
-        [clubName]: { ...clubs[clubName], occupancy: updatedOccupancy },
-      };
-      this.setState({ clubs: updatedClubs }, () => this.updateMessage());
-    }
-  };
+
+    incrementCapacity = (clubName) => {
+      const { clubs, clubCapacities } = this.state;
+      const club = clubs[clubName];
+      const currentOccupancy = clubs[clubName].occupancy;
+    
+      if (currentOccupancy < clubCapacities[clubName].maxCapacity) {
+        fetch(`http://localhost:5000/increment`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            id: club.id,
+          }),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              // Update the occupancy after successful increment on the server
+              const updatedOccupancy = currentOccupancy + 1;
+              const updatedClubs = {
+                ...clubs,
+                [clubName]: { ...clubs[clubName], occupancy: updatedOccupancy },
+              };
+              this.setState({ clubs: updatedClubs }, () => {
+                // Update messages after updating the state
+                this.updateMessage();
+              });
+            } else {
+              console.log('Failed to increment occupancy');
+            }
+          })
+          .catch((error) => {
+            console.error('Error incrementing:', error);
+          });
+      }
+    };
+  
   
   decrementCapacity = (clubName) => {
-    const { clubs } = this.state;
+    const { clubs, clubCapacities } = this.state;
+    const club = clubs[clubName];
     const currentOccupancy = clubs[clubName].occupancy;
+    
   
     if (currentOccupancy > 0) {
-      const updatedOccupancy = currentOccupancy - 1;
-      const updatedClubs = {
-        ...clubs,
-        [clubName]: { ...clubs[clubName], occupancy: updatedOccupancy },
-      };
-      this.setState({ clubs: updatedClubs }, () => this.updateMessage());
+      fetch(`http://localhost:5000/decrement`, {
+          method: 'PUT',
+          body: JSON.stringify({
+            id: club.id,
+          }),
+          headers: {
+            'Content-type': 'application/json; charset=UTF-8',
+          },
+        })
+          .then((response) => {
+            if (response.ok) {
+              const updatedOccupancy = currentOccupancy - 1;
+              const updatedClubs = {
+                ...clubs,
+                [clubName]: { ...clubs[clubName], occupancy: updatedOccupancy },
+              };
+              this.setState({ clubs: updatedClubs }, () => {
+                this.updateMessage();
+              });
+            } else {
+              console.log('Failed to decrement occupancy');
+            }
+          })
+          .catch((error) => {
+            console.error('Error decrementing:', error);
+          });
     }
   };
-  
-  handleCapacityChange = (operation, clubName) => {
-    if (operation === 'increment') {
-      this.incrementCapacity(clubName);
-    } else if (operation === 'decrement') {
-      this.decrementCapacity(clubName);
-    }
-  };
-
   
   render() {
     const { clubs, messages, filterCity, isModalOpen } = this.state;

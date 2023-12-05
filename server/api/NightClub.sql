@@ -5,7 +5,7 @@ CREATE TABLE NightClub (
     name VARCHAR(30) not null,
     genre varchar(30) not null,
     location varchar(30),
-    occupancy integer,
+    occupancy integer ,
     yellowThreshold integer,
     max integer 
 );

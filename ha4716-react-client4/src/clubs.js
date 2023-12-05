@@ -1,11 +1,11 @@
 import React from 'react';
 
 
-const Club = ({ clubName, color, message, occupancy, area, genre, handleCapacityChange,handleRemoveClub  }) => {
+const Club = ({ clubName, color, message, occupancy, area, genre, incrementCapacity, decrementCapacity, doDelete, id}) => {
   return (
     <div className="club" key={clubName} id={clubName} style={{ backgroundColor: color }}>
       <div className="club-container">
-        <button className= 'remove' onClick={() => handleRemoveClub(clubName)}>
+        <button className= 'remove' onClick={() => doDelete(clubName)}>
             Remove
           </button>
         <h2>{clubName}</h2>
@@ -14,10 +14,10 @@ const Club = ({ clubName, color, message, occupancy, area, genre, handleCapacity
         <p className="message">{message}</p>
         <div className='buttons'>
        
-      <button className = 'plus' onClick={() => handleCapacityChange('increment', clubName)} id="plus">
+      <button className = 'plus' onClick={() => incrementCapacity( clubName)} id="plus">
         +
       </button>
-      <button className = 'minus' onClick={() => handleCapacityChange('decrement', clubName)} id="minus">
+      <button className = 'minus' onClick={() => decrementCapacity(clubName)} id="minus">
         -
       </button>
       
