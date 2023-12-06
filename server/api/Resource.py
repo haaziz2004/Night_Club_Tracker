@@ -1,3 +1,4 @@
+from flask import abort
 from flask_restful import Resource
 
 from flask_restful import request
@@ -70,10 +71,17 @@ class incrementOccupancy(Resource):
         sql = "SELECT occupancy FROM NightClub WHERE id = %s "
         current = exec_get_all(sql,(id,))
         new = int(current[0][0]) + 1
-        sql2 = """ UPDATE NightClub SET occupancy = %s WHERE id = %s RETURNING occupancy"""
-        result = exec_insert_returning(sql2,(new,id,))
-        return result
-    
+        sql = "SELECT max FROM NightClub WHERE id = %s "
+        max = exec_get_all(sql,(id,))
+        maxCap = int(max[0][0]) 
+
+        if (new <= maxCap ):
+            sql2 = """ UPDATE NightClub SET occupancy = %s WHERE id = %s RETURNING occupancy"""
+            result = exec_insert_returning(sql2,(new,id,))
+            return result
+        else:
+            abort(404)
+        
 class decrementOccupancy(Resource):
     def put(self):
         parser =reqparse.RequestParser()
@@ -83,9 +91,12 @@ class decrementOccupancy(Resource):
         sql = "SELECT occupancy FROM NightClub WHERE id = %s "
         current = exec_get_all(sql,(id,))
         new = int(current[0][0]) - 1
-        sql2 = """ UPDATE NightClub SET occupancy = %s WHERE id = %s RETURNING occupancy"""
-        result = exec_insert_returning(sql2,(new,id,))
-        return result
+        if (new >= 0):
+            sql2 = """ UPDATE NightClub SET occupancy = %s WHERE id = %s RETURNING occupancy"""
+            result = exec_insert_returning(sql2,(new,id,))
+            return result
+        else:
+            abort(404)
 
 
 
