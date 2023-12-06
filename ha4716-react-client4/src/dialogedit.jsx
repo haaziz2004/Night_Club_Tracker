@@ -35,8 +35,8 @@ export const EditModal = ({ isOpen, toggleModal, editClub, clubData }) => {
         <input
           type="text"
           id="name"
-          name="clubName" // Update the name attribute to match the data key
-          value={editedClubData.clubName} // Use the correct key from editedClubData
+          name="clubName" 
+          value={editedClubData.clubName} 
           onChange={handleInputChange}
           placeholder={clubData.clubData.clubName}
         />
