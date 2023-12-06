@@ -14,6 +14,11 @@ body {
 .sub-heading {
     font-size: 18px;
     margin-top: 10px;
+    text-align: center;
+    justify-content: space-around;
+    flex-wrap: wrap;
+
+
 }
 
 .club-container {
@@ -21,7 +26,7 @@ body {
     justify-content: space-around;
     flex-wrap: wrap;
     margin: 20px;
-    margin-bottom: 175px;
+    margin-bottom: 100px;
 }
 
 .club {
@@ -70,10 +75,14 @@ body {
 }
 
 .add {
-  justify-content: center;  
-  display: flex;
-  width: 100px;
-   
+  width:fit-content;
+  background-color: lightgreen;
+
+
+
+}
+.filter{
+    margin-bottom: 25px
 }
 .remove {
     margin: 5px;
@@ -85,6 +94,19 @@ body {
     font-weight: bold;
     width: 80px; 
     background-color: #D21404;
+
+    
+}
+.edit {
+    margin: 5px;
+    position: absolute;
+    bottom: 285px;
+    left: 180px;
+    transform: translateX(-70%);
+    font-size: medium;
+    font-weight: bold;
+    width: 80px; 
+    background-color: white;
 
     
 }

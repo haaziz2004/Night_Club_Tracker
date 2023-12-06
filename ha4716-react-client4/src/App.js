@@ -4,6 +4,8 @@ import './clubs.css';
 import Club from './clubs'; 
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { CreateModal } from './dialogcreate';
+import { EditModal } from './dialogedit';
+
 
 
 class NightclubCapacity extends Component {
@@ -23,8 +25,7 @@ class NightclubCapacity extends Component {
       },
       filterCity: '',
       isModalOpen: false,
-
-      
+      isEditModalOpen: false,
     };
   }
 //GET
@@ -106,25 +107,25 @@ class NightclubCapacity extends Component {
       isModalOpen: !prevState.isModalOpen,
     }));
   };
+
+  toggleEditModal = (clubName) => {
+    const { clubs, clubCapacities } = this.state;
+    const selectedClubData = {
+      clubData: clubs[clubName],
+      capacities: clubCapacities[clubName],
+    };
+  
+    this.setState((prevState) => ({
+      isEditModalOpen: !prevState.isEditModalOpen,
+      selectedClub: selectedClubData,
+    }), () => {
+      console.log(this.state.selectedClub); 
+    });
+  };
   
  //CREATE 
 
   createClub = (newClubData) => {
-    /*const { clubs } = this.state;
-    const newClubs = Object.keys(newClubData).reduce((acc, clubName) => {
-      acc[clubName] = {
-        ...newClubData[clubName],
-        occupancy: 0, 
-      };
-      return acc;
-    }, {});
-  
-    this.setState({
-      clubs: {
-        ...clubs,
-        ...newClubs,
-      },
-    });*/
     const { clubs, clubCapacities } = this.state;
     const clubName = Object.keys(newClubData)[0]; 
      
@@ -138,6 +139,39 @@ class NightclubCapacity extends Component {
         location: newClubData[clubName].location,
         yellowThreshold: newClubData[clubName].yellowThreshold,
         max: newClubData[clubName].maxCapacity
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          this.fetchData()
+        } else {
+          console.log('Failed to create club');
+        }
+      })
+      .catch((error) => {
+        console.error('Error creating club:', error);
+      });
+
+  };
+
+  editClub = (newClubData) => {
+    const { clubs, clubCapacities } = this.state;
+    const clubName = Object.keys(newClubData)[0]; 
+     
+    console.log(newClubData);
+
+    fetch(`http://localhost:5000/NightClub`, {
+      method: 'PUT',
+      body: JSON.stringify({
+        name: newClubData.clubName,
+        genre: newClubData.genre,
+        location: newClubData.location,
+        yellowThreshold: newClubData.yellowThreshold,
+        max: newClubData.maxCapacity,
+        id: newClubData.clubData.id
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -204,6 +238,7 @@ class NightclubCapacity extends Component {
         decrementCapacity={this.decrementCapacity}
         doDelete={this.doDelete}
         id ={clubName.id}
+        editClub={this.toggleEditModal}
 
 
         />
@@ -223,6 +258,8 @@ class NightclubCapacity extends Component {
           incrementCapacity={this.incrementCapacity}
           decrementCapacity={this.decrementCapacity}
           doDelete={this.doDelete}
+          editClub={this.toggleEditModal}
+
 
           />
         ));
@@ -338,7 +375,7 @@ class NightclubCapacity extends Component {
   };
   
   render() {
-    const { clubs, messages, filterCity, isModalOpen } = this.state;
+    const { clubs, messages, filterCity, isModalOpen , isEditModalOpen,selectedClub} = this.state;
 
     return (
       <div>
@@ -352,15 +389,18 @@ class NightclubCapacity extends Component {
           {this.filteredClubs()}
         </div>
         <input
+        className='filter'
           type="text"
           placeholder="Filter by city..."
           value={filterCity}
           onChange={this.handleFilterChange}
         />
         <div>
-          <button className = "add" onClick={this.toggleModal}>Add New Club</button>
+          <button className = "add" onClick={this.toggleModal}>+Add New Club+</button>
           </div>
         <CreateModal isOpen={isModalOpen} toggleModal={this.toggleModal} createClub={this.createClub} />
+        <EditModal isOpen={isEditModalOpen} toggleModal={this.toggleEditModal} editClub={this.editClub} clubData = {selectedClub}/>
+
         </div>
       
     );
