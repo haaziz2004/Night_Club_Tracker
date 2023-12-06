@@ -19,6 +19,9 @@ export const EditModal = ({ isOpen, toggleModal, editClub, clubData }) => {
 
     toggleModal();
   };
+  const cancel = () => {
+    toggleModal(); 
+  };
 
   if (!isOpen) {
     return null;
@@ -27,9 +30,11 @@ export const EditModal = ({ isOpen, toggleModal, editClub, clubData }) => {
   return (
     <div className="modal-container">
       <div className="modal-content">
-        <span className="close" onClick={toggleModal}>
-          &times;
+        <span className="close" onClick={toggleModal}>&times;
         </span>
+        <button className = "x" type="button" onClick={cancel}>
+          x
+        </button>
         <h2>Edit Club</h2>
         <label>Name: </label>
         <input
@@ -82,7 +87,7 @@ export const EditModal = ({ isOpen, toggleModal, editClub, clubData }) => {
         />
 
         <button type="button" onClick={saveChanges}>
-          Save Changes
+          Save
         </button>
       </div>
     </div>

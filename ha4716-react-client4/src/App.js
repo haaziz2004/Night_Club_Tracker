@@ -102,10 +102,13 @@ class NightclubCapacity extends Component {
 
   //MODAL
 
-  toggleModal = () => {
-    this.setState((prevState) => ({
+  toggleModal = (bool) => {
+    if (bool != false){
+      this.setState((prevState) => ({
       isModalOpen: !prevState.isModalOpen,
     }));
+    }
+    
   };
 
   toggleEditModal = (clubName) => {

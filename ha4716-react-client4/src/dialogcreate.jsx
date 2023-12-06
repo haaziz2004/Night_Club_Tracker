@@ -37,11 +37,25 @@ export const CreateModal = ({ isOpen, toggleModal, createClub }) => {
     if (!isOpen) {
       return null; 
     }
+
+    const cancel = () => {
+      setClubData({
+        name: '',
+        genre: '',
+        location: '',
+        yellowThreshold: 10,
+        maxCapacity: 20,
+      });
+      toggleModal(); 
+    };
   
     return (
       <div className="modal-container">
         <div className="modal-content">
           <span className="close" onClick={toggleModal}>&times;</span>
+          <button className = "x" type="button" onClick={cancel}>
+          x
+        </button>
           <h2>Create Club</h2>
           <label>Name: </label>
           <input type="text" id="name" name="name" value={clubData.name} onChange={handleInputChange} />
