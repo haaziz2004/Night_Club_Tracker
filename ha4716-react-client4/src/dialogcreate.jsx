@@ -17,10 +17,11 @@ export const CreateModal = ({ isOpen, toggleModal, createClub }) => {
     const save = () => {
       createClub({
         [clubData.name]: {
+          name: clubData.name,
           genre: clubData.genre,
           location: clubData.location,
-          yellow: parseInt(clubData.yellowThreshold, 10),
-          max: parseInt(clubData.maxCapacity, 10),
+          yellowThreshold: parseInt(clubData.yellowThreshold, 10),
+          maxCapacity: parseInt(clubData.maxCapacity, 10),
         },
       });
       setClubData({
@@ -55,7 +56,7 @@ export const CreateModal = ({ isOpen, toggleModal, createClub }) => {
           <input type="number" id="yellowThreshold" name="yellowThreshold" value={clubData.yellowThreshold} onChange={handleInputChange} />
   
           <label>Max Capacity: </label>
-          <input type="number" id="maxThreshold" name="maxThreshold" value={clubData.maxCapacity} onChange={handleInputChange} />
+          <input type="number" id="maxCapacity" name="maxCapacity" value={clubData.maxCapacity} onChange={handleInputChange} />
   
           <button type="button" onClick={save}>
             Save

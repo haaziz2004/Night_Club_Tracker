@@ -35,6 +35,9 @@
     right: 10px;
     cursor: pointer;
   }
+  button {
+    width: 100px
+  }
   
 
   

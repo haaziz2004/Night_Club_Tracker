@@ -39,7 +39,6 @@ class NightclubCapacity extends Component {
         area: clubData[3],
         genre: clubData[2],
         clubName: clubData[1],
-         
         occupancy: clubData[4],
         id: clubData[0],
       };
@@ -111,7 +110,7 @@ class NightclubCapacity extends Component {
  //CREATE 
 
   createClub = (newClubData) => {
-    const { clubs } = this.state;
+    /*const { clubs } = this.state;
     const newClubs = Object.keys(newClubData).reduce((acc, clubName) => {
       acc[clubName] = {
         ...newClubData[clubName],
@@ -125,7 +124,36 @@ class NightclubCapacity extends Component {
         ...clubs,
         ...newClubs,
       },
-    });
+    });*/
+    const { clubs, clubCapacities } = this.state;
+    const clubName = Object.keys(newClubData)[0]; 
+     
+    console.log(newClubData);
+
+    fetch(`http://localhost:5000/NightClub`, {
+      method: 'POST',
+      body: JSON.stringify({
+        name: newClubData[clubName].name,
+        genre: newClubData[clubName].genre,
+        location: newClubData[clubName].location,
+        yellowThreshold: newClubData[clubName].yellowThreshold,
+        max: newClubData[clubName].maxCapacity
+      }),
+      headers: {
+        'Content-type': 'application/json; charset=UTF-8',
+      },
+    })
+      .then((response) => {
+        if (response.ok) {
+          this.fetchData()
+        } else {
+          console.log('Failed to create club');
+        }
+      })
+      .catch((error) => {
+        console.error('Error creating club:', error);
+      });
+
   };
 
   //REMOVE
@@ -265,16 +293,9 @@ class NightclubCapacity extends Component {
         })
           .then((response) => {
             if (response.ok) {
-              // Update the occupancy after successful increment on the server
-              const updatedOccupancy = currentOccupancy + 1;
-              const updatedClubs = {
-                ...clubs,
-                [clubName]: { ...clubs[clubName], occupancy: updatedOccupancy },
-              };
-              this.setState({ clubs: updatedClubs }, () => {
-                // Update messages after updating the state
-                this.updateMessage();
-              });
+              this.fetchData();
+              this.updateMessage();
+              
             } else {
               console.log('Failed to increment occupancy');
             }
@@ -304,14 +325,8 @@ class NightclubCapacity extends Component {
         })
           .then((response) => {
             if (response.ok) {
-              const updatedOccupancy = currentOccupancy - 1;
-              const updatedClubs = {
-                ...clubs,
-                [clubName]: { ...clubs[clubName], occupancy: updatedOccupancy },
-              };
-              this.setState({ clubs: updatedClubs }, () => {
-                this.updateMessage();
-              });
+              this.fetchData();
+              this.updateMessage();
             } else {
               console.log('Failed to decrement occupancy');
             }

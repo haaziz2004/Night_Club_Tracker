@@ -8,7 +8,7 @@ from .swen_344_db_utils import *
 class NightClub(Resource):
     def get(self):
     # NOTE: No need to replicate code; use the util function!
-       result = exec_get_all("SELECT * FROM NightClub")
+       result = exec_get_all("SELECT * FROM NightClub ORDER BY id")
        return result
        
     def delete(self,id):
@@ -42,8 +42,8 @@ class NightClub(Resource):
         parser.add_argument('name', type=str)
         parser.add_argument('genre', type=str)
         parser.add_argument('location',type = str)
-        parser.add_argument('yellowThreshold',type = str)
-        parser.add_argument('max',type = str)
+        parser.add_argument('yellowThreshold',type = int)
+        parser.add_argument('max',type = int)
 
         args = parser.parse_args()
         name = args['name']
@@ -64,7 +64,7 @@ class DeleteClub(Resource):
 class incrementOccupancy(Resource):
     def put(self):
         parser =reqparse.RequestParser()
-        parser.add_argument('id', type=str)
+        parser.add_argument('id', type=int)
         args = parser.parse_args()
         id = int(args['id'])
         sql = "SELECT occupancy FROM NightClub WHERE id = %s "
@@ -77,7 +77,7 @@ class incrementOccupancy(Resource):
 class decrementOccupancy(Resource):
     def put(self):
         parser =reqparse.RequestParser()
-        parser.add_argument('id', type=str)
+        parser.add_argument('id', type=int)
         args = parser.parse_args()
         id = int(args['id'])
         sql = "SELECT occupancy FROM NightClub WHERE id = %s "
