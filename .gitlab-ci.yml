@@ -8,7 +8,7 @@ variables:
 
   PROJECT_NAME3: ha4716-react-client3  #e.g. acb123-react-client3.  Change to YOUR project 
 
-  PROJECT_NAME4: none  #e.g. acb123-react-client4.  Change to YOUR project 
+  PROJECT_NAME4: ha4716-react-client4  #e.g. acb123-react-client4.  Change to YOUR project 
 
   OUTPUT_DIR2: public/$PROJECT_NAME2
   OUTPUT_DIR3: public/$PROJECT_NAME3
