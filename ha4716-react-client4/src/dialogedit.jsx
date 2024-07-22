@@ -85,7 +85,6 @@ export const EditModal = ({ isOpen, toggleModal, editClub, clubData }) => {
           onChange={handleInputChange}
           placeholder={String(clubData.capacities.maxCapacity)}
         />
-
         <button type="button" onClick={saveChanges}>
           Save
         </button>

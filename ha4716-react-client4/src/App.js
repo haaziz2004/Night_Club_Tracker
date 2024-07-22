@@ -5,29 +5,30 @@ import Club from './clubs';
 import { Modal, ModalHeader, ModalBody, ModalFooter, Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import { CreateModal } from './dialogcreate';
 import { EditModal } from './dialogedit';
-
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 
 class NightclubCapacity extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      clubs: {
-        
-      },
+      clubs: {},
       selectedClub: null,
-      messages: {
-        
-      },
-
-      clubCapacities: {
-        
-      },
+      messages: {},
+      clubCapacities: {},
       filterCity: '',
       isModalOpen: false,
       isEditModalOpen: false,
+      newClubData: {
+        name: '',
+        genre: '',
+        location: '',
+        yellowThreshold: 10,
+        maxCapacity: 20,
+      },
     };
   }
+  
 //GET
   updateData = (apiResponse) => {
     const updatedClubs = {};
@@ -102,14 +103,33 @@ class NightclubCapacity extends Component {
 
   //MODAL
 
-  toggleModal = (bool) => {
-    if (bool != false){
-      this.setState((prevState) => ({
+  toggleModal = () => {
+    const { newClubData } = this.state;
+
+    this.setState((prevState) => ({
       isModalOpen: !prevState.isModalOpen,
     }));
-    }
-    
+    this.setState({
+      newClubData: {
+        name: '',
+        genre: '',
+        location: '',
+        yellowThreshold: 10,
+        maxCapacity: 20,
+      },
+    });
   };
+
+  handleInputChange = (event) => {
+    const { name, value } = event.target;
+    this.setState((prevState) => ({
+      newClubData: {
+        ...prevState.newClubData,
+        [name]: value,
+      },
+    }));
+  };
+
 
   toggleEditModal = (clubName) => {
     const { clubs, clubCapacities } = this.state;
@@ -128,20 +148,21 @@ class NightclubCapacity extends Component {
   
  //CREATE 
 
-  createClub = (newClubData) => {
-    const { clubs, clubCapacities } = this.state;
-    const clubName = Object.keys(newClubData)[0]; 
+  createClub = () => {
+   
+    const { newClubData } = this.state;
+
      
     console.log(newClubData);
 
     fetch(`http://localhost:5000/NightClub`, {
       method: 'POST',
       body: JSON.stringify({
-        name: newClubData[clubName].name,
-        genre: newClubData[clubName].genre,
-        location: newClubData[clubName].location,
-        yellowThreshold: newClubData[clubName].yellowThreshold,
-        max: newClubData[clubName].maxCapacity
+        name: newClubData.name,
+        genre: newClubData.genre,
+        location: newClubData.location,
+        yellowThreshold: newClubData.yellowThreshold,
+        max: newClubData.maxCapacity,
       }),
       headers: {
         'Content-type': 'application/json; charset=UTF-8',
@@ -149,7 +170,17 @@ class NightclubCapacity extends Component {
     })
       .then((response) => {
         if (response.ok) {
-          this.fetchData()
+          this.fetchData();
+          this.setState({
+            newClubData: {
+              name: '',
+              genre: '',
+              location: '',
+              yellowThreshold: 10,
+              maxCapacity: 20,
+            },
+            isModalOpen: false,
+          });
         } else {
           console.log('Failed to create club');
         }
@@ -157,7 +188,6 @@ class NightclubCapacity extends Component {
       .catch((error) => {
         console.error('Error creating club:', error);
       });
-
   };
 
   editClub = (newClubData) => {
@@ -378,7 +408,7 @@ class NightclubCapacity extends Component {
   };
   
   render() {
-    const { clubs, messages, filterCity, isModalOpen , isEditModalOpen,selectedClub} = this.state;
+    const { clubs, messages, filterCity, isModalOpen , isEditModalOpen,selectedClub, newClubData} = this.state;
 
     return (
       <div>
@@ -399,12 +429,42 @@ class NightclubCapacity extends Component {
           onChange={this.handleFilterChange}
         />
         <div>
-          <button className = "add" onClick={this.toggleModal}>+Add New Club+</button>
+          <Button className="add" onClick={this.toggleModal}>+Add New Club+</Button>
           </div>
-        <CreateModal isOpen={isModalOpen} toggleModal={this.toggleModal} createClub={this.createClub} />
+          <Modal isOpen={isModalOpen} toggle={this.toggleModal}>
+          <ModalHeader toggle={this.toggleModal}>Create Club</ModalHeader>
+          <ModalBody>
+            <Form>
+              <FormGroup>
+                <Label for="name">Name:</Label>
+                <Input type="text" id="name" name="name" value={newClubData.name} onChange={this.handleInputChange} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="genre">Genre:</Label>
+                <Input type="text" id="genre" name="genre" value={newClubData.genre} onChange={this.handleInputChange} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="location">Location:</Label>
+                <Input type="text" id="location" name="location" value={newClubData.location} onChange={this.handleInputChange} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="yellowThreshold">Yellow Threshold:</Label>
+                <Input type="number" id="yellowThreshold" name="yellowThreshold" value={newClubData.yellowThreshold} onChange={this.handleInputChange} />
+              </FormGroup>
+              <FormGroup>
+                <Label for="maxCapacity">Max Capacity:</Label>
+                <Input type="number" id="maxCapacity" name="maxCapacity" value={newClubData.maxCapacity} onChange={this.handleInputChange} />
+              </FormGroup>
+            </Form>
+          </ModalBody>
+          <ModalFooter>
+            <Button color="primary" onClick={this.createClub}>Save</Button>{' '}
+            <Button color="secondary" onClick={this.toggleModal}>Cancel</Button>
+          </ModalFooter>
+        </Modal>
         <EditModal isOpen={isEditModalOpen} toggleModal={this.toggleEditModal} editClub={this.editClub} clubData = {selectedClub}/>
 
-        </div>
+      </div>
       
     );
   }
